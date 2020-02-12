@@ -1,5 +1,6 @@
-## docker run example:
+# docker run example:
 
+```bash
 docker run -d --name coredns \
            -m 256m \
            --log-opt max-size=16m \
@@ -11,4 +12,4 @@ docker run -d --name coredns \
            -p 53:53/udp \
            -p 9053:9053/tcp \
            ruijzhan/coredns:armv7l
-
+```
