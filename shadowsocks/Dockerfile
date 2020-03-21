@@ -4,13 +4,13 @@ MAINTAINER qiudog825@gmail.com
 
 ARG TZ='Asia/Chongqing'
 ARG SS_LIBEV_VERSION=v3.3.3
-ARG KCP_VERSION=20200201
+ARG KCP_VERSION=20200321
 ARG V2RAY_PLUGIN_VERSION=v1.3.0
 ARG SS_DOWNLOAD_URL=https://github.com/shadowsocks/shadowsocks-libev.git 
-ARG KCP_DOWNLOAD_URL=https://github.com/xtaci/kcptun/releases/download/v${KCP_VERSION}/kcptun-linux-arm7-${KCP_VERSION}.tar.gz
+ARG KCP_DOWNLOAD_URL=https://github.com/xtaci/kcptun/releases/download/v${KCP_VERSION}/kcptun-linux-arm64-${KCP_VERSION}.tar.gz
 ARG PLUGIN_OBFS_DOWNLOAD_URL=https://github.com/shadowsocks/simple-obfs.git
-ARG PLUGIN_V2RAY_DOWNLOAD_URL=https://github.com/shadowsocks/v2ray-plugin/releases/download/${V2RAY_PLUGIN_VERSION}/v2ray-plugin-linux-arm-${V2RAY_PLUGIN_VERSION}.tar.gz
-ARG LINUX_HEADERS_DOWNLOAD_URL=http://dl-cdn.alpinelinux.org/alpine/v3.11/main/armv7/linux-headers-4.19.36-r0.apk
+ARG PLUGIN_V2RAY_DOWNLOAD_URL=https://github.com/shadowsocks/v2ray-plugin/releases/download/${V2RAY_PLUGIN_VERSION}/v2ray-plugin-linux-arm64-${V2RAY_PLUGIN_VERSION}.tar.gz
+ARG LINUX_HEADERS_DOWNLOAD_URL=http://dl-cdn.alpinelinux.org/alpine/v3.11/main/aarch64/linux-headers-4.19.36-r0.apk
 
 RUN set -x \
     && apk upgrade \
@@ -46,11 +46,11 @@ RUN set -x \
     && make install) \
     && curl -o v2ray_plugin.tar.gz -sSL ${PLUGIN_V2RAY_DOWNLOAD_URL} \
     && tar -zxf v2ray_plugin.tar.gz \
-    && mv v2ray-plugin_linux_arm7 /usr/bin/v2ray-plugin \
-    && curl -o kcptun-linux-arm7-${KCP_VERSION}.tar.gz -sSL ${KCP_DOWNLOAD_URL} \
-    && tar -zxf kcptun-linux-arm7-${KCP_VERSION}.tar.gz \
-    && mv server_linux_arm7 /usr/bin/kcpserver \
-    && mv client_linux_arm7 /usr/bin/kcpclient \
+    && mv v2ray-plugin_linux_arm64 /usr/bin/v2ray-plugin \
+    && curl -o kcptun-linux-arm64-${KCP_VERSION}.tar.gz -sSL ${KCP_DOWNLOAD_URL} \
+    && tar -zxf kcptun-linux-arm64-${KCP_VERSION}.tar.gz \
+    && mv server_linux_arm64 /usr/bin/kcpserver \
+    && mv client_linux_arm64 /usr/bin/kcpclient \
     && for binPath in `ls /usr/bin/ss-* /usr/local/bin/obfs-* /usr/bin/kcp* /usr/bin/v2ray*`; do \
             setcap CAP_NET_BIND_SERVICE=+eip $binPath; \
        done \
@@ -64,7 +64,7 @@ RUN set -x \
       | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
       | sort -u) \
     && rm -rf /linux-headers-4.19.36-r0.apk \
-        kcptun-linux-arm7-${KCP_VERSION}.tar.gz \
+        kcptun-linux-arm64-${KCP_VERSION}.tar.gz \
         shadowsocks-libev \
         simple-obfs \
         v2ray_plugin.tar.gz \
